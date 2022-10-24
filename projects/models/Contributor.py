@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from rest_framework import serializers
+
 
 class Contributor(models.Model):
     user = models.ForeignKey(
@@ -12,3 +14,11 @@ class Contributor(models.Model):
         ("editor", "editor"),
     ])
     role = models.CharField(max_length=100, blank=True)
+
+
+class ContributorSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = Contributor
+        fields = ['username', 'permission', 'role']
